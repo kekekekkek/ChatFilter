@@ -1,5 +1,5 @@
 # ChatFilter
-`ChatFilter` is a simple plugin that will allow you to avoid unnecessary problems when communicating with toxic players.<br>The task of this plugin is to censor incoming messages if they contain obscene words.
+`ChatFilter.as` is a simple plugin that will allow you to avoid unnecessary problems when communicating with toxic players.<br>The task of this plugin is to censor incoming messages if they contain obscene words.
 
 # Installation
 Installing the plugin consists of several steps:
