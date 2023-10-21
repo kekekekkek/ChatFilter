@@ -41,7 +41,7 @@ You can add words in any language (I only tested two languages).<br><br>
 7. Now, after placing the plugin in the game files and after filling in the text file `BadWords.txt`, you can run the game and check the result.
 
 # Screenshots
-* Скриншот 1<br><br>
-![Screenshot_1]()
-* Скриншот 2<br><br>
-![Screenshot_2]()
+* Screenshot 1<br><br>
+![Screenshot_1](https://github.com/kekekekkek/ChatFilter/blob/main/Images/Screenshot_1.png)
+* Screenshot 2<br><br>
+![Screenshot_2](https://github.com/kekekekkek/ChatFilter/blob/main/Images/Screenshot_2.png)
