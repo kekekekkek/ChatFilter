@@ -1,9 +1,9 @@
 # ChatFilter
-`ChatFilter` is a simple plugin that will allow you to avoid unnecessary problems when communicating with toxic players.<br>The task of this plugin is to censor incoming messages if they contain obscene words.
+`ChatFilter.as` is a simple plugin that will allow you to avoid unnecessary problems when communicating with toxic players.<br>The task of this plugin is to censor incoming messages if they contain obscene words.
 
 # Installation
 Installing the plugin consists of several steps:
-1. Download this plugin;
+1. [Download](https://github.com/kekekekkek/ChatFilter/archive/refs/heads/main.zip) this plugin;
 2. Open the `..\Sven Co-op\svencoop_addon\scripts\plugins` directory and place the `ChatFilter` folder there;
 3. Next, go to the `..\Sven Co-op\svencoop` folder and find there the text file `default_plugins.txt`;
 4. Open this file and paste the following text into it:
@@ -41,7 +41,7 @@ You can add words in any language (I only tested two languages).<br><br>
 7. Now, after placing the plugin in the game files and after filling in the text file `BadWords.txt`, you can run the game and check the result.
 
 # Screenshots
-* Скриншот 1<br><br>
-![Screenshot_1]()
-* Скриншот 2<br><br>
-![Screenshot_2]()
+* Screenshot 1<br><br>
+![Screenshot_1](https://github.com/kekekekkek/ChatFilter/blob/main/Images/Screenshot_1.png)
+* Screenshot 2<br><br>
+![Screenshot_2](https://github.com/kekekekkek/ChatFilter/blob/main/Images/Screenshot_2.png)
