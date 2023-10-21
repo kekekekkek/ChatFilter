@@ -3,7 +3,7 @@
 
 # Installation
 Installing the plugin consists of several steps:
-1. Download this plugin;
+1. [Download](https://github.com/kekekekkek/ChatFilter/archive/refs/heads/main.zip) this plugin;
 2. Open the `..\Sven Co-op\svencoop_addon\scripts\plugins` directory and place the `ChatFilter` folder there;
 3. Next, go to the `..\Sven Co-op\svencoop` folder and find there the text file `default_plugins.txt`;
 4. Open this file and paste the following text into it:
