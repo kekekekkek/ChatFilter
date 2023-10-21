@@ -110,11 +110,7 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		string strFilteredMsg = Filter(strMsg, strGetBadWords);
 		pSayParam.ShouldHide = true;
 		
-		if (!IsSayTeam(cstSayType))
-			PlayerSay(pPlayer, strFilteredMsg);
-		else
-			PlayerSayTeam(pPlayer, strFilteredMsg);
-		
+		(!IsSayTeam(cstSayType) ? PlayerSay(pPlayer, strFilteredMsg) : PlayerSayTeam(pPlayer, strFilteredMsg));
 		return HOOK_HANDLED;
 	}
 	
