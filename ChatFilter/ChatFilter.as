@@ -72,7 +72,7 @@ bool IsBadWords(string strText, array<string> strBadWords)
 	
 	for (int i = 0; i < iArraySize; i++)
 	{
-		if (strText.Find(strBadWords[i]) != String::INVALID_INDEX)
+		if (strText.ToLowercase().Find(strBadWords[i].ToLowercase()) != String::INVALID_INDEX)
 			return true;
 	}
 	
@@ -82,17 +82,31 @@ bool IsBadWords(string strText, array<string> strBadWords)
 string Filter(string strText, array<string> strBadWords)
 {
 	string strReplace = "";
+	string strGetReplace = "";
+	string strGetText = strText;
+	
 	int iArraySize = strBadWords.length();
 	
 	for (int a = 0; a < iArraySize; a++)
 	{
-		int iTextLength = strBadWords[a].Length();
-	
-		for (int b = 0; b < iTextLength; b++)
-			strReplace += "*";
+		uint uFind = strText.ToLowercase().Find(strBadWords[a].ToLowercase());
 		
-		strText = strText.Replace(strBadWords[a], strReplace);
+		if (uFind != String::INVALID_INDEX)
+		{
+			int iTextLength = strBadWords[a].Length();
+	
+			for (int b = 0; b < iTextLength; b++)
+				strReplace += "*";
+		
+			for (int b = uFind; b < (uFind + iTextLength); b++)
+				strGetReplace += strText.opIndex(b);
+			
+			a = 0;
+			strText = strText.Replace(strGetReplace, strReplace);
+		}
+		
 		strReplace.Clear();
+		strGetReplace.Clear();
 	}
 	
 	return strText;
