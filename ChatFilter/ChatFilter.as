@@ -83,7 +83,6 @@ string Filter(string strText, array<string> strBadWords)
 {
 	string strReplace = "";
 	string strGetReplace = "";
-	string strGetText = strText;
 	
 	int iArraySize = strBadWords.length();
 	
