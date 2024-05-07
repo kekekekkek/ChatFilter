@@ -1,3 +1,6 @@
+array<string> strGetBadWords = {};
+uint uSaveFileSize = 0, uCurFileSize = 0;
+
 void PluginInit()
 {
 	g_Module.ScriptInfo.SetAuthor("kek");
@@ -8,10 +11,10 @@ void PluginInit()
 
 void PlayerSay(CBaseEntity@ pEntity, string strMsg)
 {
-	NetworkMessage NetMsg(MSG_ALL, NetworkMessages::NetworkMessageType(74)); //SayText
+	NetworkMessage NetMsg(MSG_ALL, NetworkMessages::NetworkMessageType(74));
 	
 	NetMsg.WriteByte(pEntity.entindex());
-	NetMsg.WriteByte(2); //CLASS_PLAYER
+	NetMsg.WriteByte(2);
 	NetMsg.WriteString("" + pEntity.pev.netname + ": " + strMsg + "\n");
 	
     NetMsg.End();
@@ -19,17 +22,17 @@ void PlayerSay(CBaseEntity@ pEntity, string strMsg)
 
 void PlayerSayTeam(CBaseEntity@ pEntity, string strMsg)
 {
-	for (int i = 0; i < g_Engine.maxClients + 1; i++)
+	for (int i = 1; i <= g_Engine.maxClients; i++)
 	{
 		edict_t@ pCurEdict = g_EngineFuncs.PEntityOfEntIndex(i);
 		CBaseEntity@ pCurEntity = g_EntityFuncs.Instance(pCurEdict);
 		
 		if (pEntity.IRelationship(pCurEntity) == R_AL)
 		{
-			NetworkMessage NetMsg(MSG_ONE, NetworkMessages::NetworkMessageType(74), pCurEdict); //SayText
+			NetworkMessage NetMsg(MSG_ONE, NetworkMessages::NetworkMessageType(74), pCurEdict);
 		
 			NetMsg.WriteByte(pEntity.entindex());
-			NetMsg.WriteByte(2); //CLASS_PLAYER
+			NetMsg.WriteByte(2);
 			NetMsg.WriteString("(TEAM) " + pEntity.pev.netname + ": " + strMsg + "\n");
 			
 			NetMsg.End();
@@ -39,10 +42,23 @@ void PlayerSayTeam(CBaseEntity@ pEntity, string strMsg)
 
 bool IsSayTeam(ClientSayType cstSayType)
 {
-	if (cstSayType == CLIENTSAY_SAYTEAM)
-		return true;
+	return (cstSayType == CLIENTSAY_SAYTEAM);
+}
+
+bool Is2Bytes(char chSymbol)
+{
+	return (chSymbol > 255);
+}
+
+uint GetFileSize(string strFileName)
+{
+	uint uFileSize = 0;
+	File@ fFile = g_FileSystem.OpenFile(strFileName, OpenFile::READ);
+	
+	if (fFile !is null && fFile.IsOpen())
+		uFileSize = fFile.GetSize();
 		
-	return false;
+	return uFileSize;
 }
 
 array<string> LoadBadWordsFromFile()
@@ -50,7 +66,7 @@ array<string> LoadBadWordsFromFile()
 	array<string> strBadWords = {};
 	File@ fFile = g_FileSystem.OpenFile("scripts/plugins/ChatFilter/BadWords.txt", OpenFile::READ);
 	
-	if (fFile.IsOpen())
+	if (fFile !is null && fFile.IsOpen())
 	{
 		while (!fFile.EOFReached())
 		{
@@ -67,10 +83,8 @@ array<string> LoadBadWordsFromFile()
 }
 
 bool IsBadWords(string strText, array<string> strBadWords)
-{
-	int iArraySize = strBadWords.length();
-	
-	for (int i = 0; i < iArraySize; i++)
+{	
+	for (uint i = 0; i < strBadWords.length(); i++)
 	{
 		if (strText.ToLowercase().Find(strBadWords[i].ToLowercase()) != String::INVALID_INDEX)
 			return true;
@@ -84,9 +98,7 @@ string Filter(string strText, array<string> strBadWords)
 	string strReplace = "";
 	string strGetReplace = "";
 	
-	int iArraySize = strBadWords.length();
-	
-	for (int a = 0; a < iArraySize; a++)
+	for (uint a = 0; a < strBadWords.length(); a++)
 	{
 		uint uFind = strText.ToLowercase().Find(strBadWords[a].ToLowercase());
 		
@@ -95,7 +107,15 @@ string Filter(string strText, array<string> strBadWords)
 			int iTextLength = strBadWords[a].Length();
 	
 			for (int b = 0; b < iTextLength; b++)
+			{
+				if (Is2Bytes(strText[b]))
+					b++;
+					
+				if (b >= iTextLength)
+					break;
+				
 				strReplace += "*";
+			}
 		
 			for (int b = uFind; b < (uFind + iTextLength); b++)
 				strGetReplace += strText.opIndex(b);
@@ -115,15 +135,22 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 {
 	string strMsg = pSayParam.GetCommand();
 	CBasePlayer@ pPlayer = pSayParam.GetPlayer();
-	ClientSayType cstSayType = pSayParam.GetSayType();
-	array<string> strGetBadWords = LoadBadWordsFromFile();
+	
+	uCurFileSize = GetFileSize("scripts/plugins/ChatFilter/BadWords.txt");
+	
+	if ((uSaveFileSize != uCurFileSize) 
+		|| strGetBadWords.length() <= 0)
+	{
+		uSaveFileSize = uCurFileSize;
+		strGetBadWords = LoadBadWordsFromFile();
+	}
 
 	if (IsBadWords(strMsg, strGetBadWords))
 	{
 		string strFilteredMsg = Filter(strMsg, strGetBadWords);
 		pSayParam.ShouldHide = true;
 		
-		(!IsSayTeam(cstSayType) ? PlayerSay(pPlayer, strFilteredMsg) : PlayerSayTeam(pPlayer, strFilteredMsg));
+		(!IsSayTeam(pSayParam.GetSayType()) ? PlayerSay(pPlayer, strFilteredMsg) : PlayerSayTeam(pPlayer, strFilteredMsg));
 		return HOOK_HANDLED;
 	}
 	
