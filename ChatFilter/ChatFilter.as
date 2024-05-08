@@ -154,6 +154,10 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 		pSayParam.ShouldHide = true;
 		
 		(!IsSayTeam(pSayParam.GetSayType()) ? PlayerSay(pPlayer, strFilteredMsg) : PlayerSayTeam(pPlayer, strFilteredMsg));
+		(!IsSayTeam(pSayParam.GetSayType()) 
+			? g_EngineFuncs.ClientPrintf(pPlayer, print_console, ("" + pPlayer.pev.netname + ": " + strFilteredMsg + "\n")) 
+			: g_EngineFuncs.ClientPrintf(pPlayer, print_console, ("(TEAM) " + pPlayer.pev.netname + ": " + strFilteredMsg + "\n")));
+		
 		return HOOK_HANDLED;
 	}
 	
