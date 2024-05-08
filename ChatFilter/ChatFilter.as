@@ -15,7 +15,7 @@ void PlayerSay(CBaseEntity@ pEntity, string strMsg)
 	
 	NetMsg.WriteByte(pEntity.entindex());
 	NetMsg.WriteByte(2);
-	NetMsg.WriteString("" + pEntity.pev.netname + ": " + strMsg + "\n");
+	NetMsg.WriteString(("" + pEntity.pev.netname + ": " + strMsg + "\n"));
 	
     NetMsg.End();
 }
@@ -33,7 +33,7 @@ void PlayerSayTeam(CBaseEntity@ pEntity, string strMsg)
 		
 			NetMsg.WriteByte(pEntity.entindex());
 			NetMsg.WriteByte(2);
-			NetMsg.WriteString("(TEAM) " + pEntity.pev.netname + ": " + strMsg + "\n");
+			NetMsg.WriteString(("(TEAM) " + pEntity.pev.netname + ": " + strMsg + "\n"));
 			
 			NetMsg.End();
 		}
@@ -56,7 +56,10 @@ uint GetFileSize(string strFileName)
 	File@ fFile = g_FileSystem.OpenFile(strFileName, OpenFile::READ);
 	
 	if (fFile !is null && fFile.IsOpen())
+	{
 		uFileSize = fFile.GetSize();
+		fFile.Close();
+	}
 		
 	return uFileSize;
 }
@@ -138,7 +141,7 @@ HookReturnCode ClientSay(SayParameters@ pSayParam)
 	
 	uCurFileSize = GetFileSize("scripts/plugins/ChatFilter/BadWords.txt");
 	
-	if ((uSaveFileSize != uCurFileSize) 
+	if (uSaveFileSize != uCurFileSize 
 		|| strGetBadWords.length() <= 0)
 	{
 		uSaveFileSize = uCurFileSize;
