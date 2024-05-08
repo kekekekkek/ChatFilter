@@ -29,13 +29,22 @@ bastard
 asshole
 dafaq
 nerd
+пидор
+даун
+конч
+уебок
+придурок
+долбаеб
+ебаный
+нахуй
+хуй
+сука
+блять
 ```
 You can add words in any language (I only tested two languages).<br><br>
 **REMEMBER**: The `LoadBadWordsFromFile` function reads the file line by line, so we need a one-line indent between each new word in the `BadWords.txt` file.<br>
 **REMEMBER**: The `Filter` function is no longer case-sensitive when replacing words. The words `shiT`, `sHIt` or `Shit` will be recognized by the filter as one swear word, unless the player writes the word `sh1t` or something else. Therefore, in the file `BadWords.txt` you will need to write only one variation of this word. But even this can be easily bypassed by putting a single space character between the word, such as `s h i t`.<br>
-**REMEMBER**: Sometimes, the `Filter` function may replace a 5-character word with a 10-character string consisting of asterisks `*`. This happens because some characters are encoded in a two-byte encoding.<br>
-**REMEMBER**: Also, reading an empty `BadWords.txt` file and filling it out incorrectly can lead to unpredictable situations.<br>
-**REMEMBER**: And also, if the `BadWords.txt` file is missing, this can also lead to unpredictable situations (I haven't tested it).<br>
+**REMEMBER**: Added encoding definition. The `Filter` function will now replace a two-byte encoded character with a single asterisk `*` character.<br>
 **REMEMBER**: This plugin may conflict with the [ChatColors](https://github.com/wootguy/ChatColors) plugin.<br>
 
 7. Now, after placing the plugin in the game files and after filling in the text file `BadWords.txt`, you can run the game and check the result.
