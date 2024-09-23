@@ -14,7 +14,7 @@ void PlayerSay(CBaseEntity@ pEntity, string strMsg)
 	NetworkMessage NetMsg(MSG_ALL, NetworkMessages::NetworkMessageType(74));
 	
 	NetMsg.WriteByte(pEntity.entindex());
-	NetMsg.WriteByte(2);
+	NetMsg.WriteByte(pEntity.Classify());
 	NetMsg.WriteString(("" + pEntity.pev.netname + ": " + strMsg + "\n"));
 	
     NetMsg.End();
@@ -32,7 +32,7 @@ void PlayerSayTeam(CBaseEntity@ pEntity, string strMsg)
 			NetworkMessage NetMsg(MSG_ONE, NetworkMessages::NetworkMessageType(74), pCurEdict);
 		
 			NetMsg.WriteByte(pEntity.entindex());
-			NetMsg.WriteByte(2);
+			NetMsg.WriteByte(pEntity.Classify());
 			NetMsg.WriteString(("(TEAM) " + pEntity.pev.netname + ": " + strMsg + "\n"));
 			
 			NetMsg.End();
